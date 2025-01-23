@@ -14,23 +14,35 @@ class DistributorComponent extends Component
     protected $paginationTheme = 'bootstrap';
     public function render()
     {
-        $data['distributor']=Distributor::paginate(10);
+        if ($this->search != "") {
+            $data['distributor'] = Distributor::where('nama_distributor', 'like', '%' . $this->search . '%')
+            ->orWhere('email', 'like', '%' . $this->search . '%')
+            ->paginate(10);
+        } else {
+            $data['distributor']=Distributor::paginate(10);
+        }
+
         return view('livewire.distributor-component', $data);
     }
     public function store()
     {
         $this->validate([
-            'nama_distributor' => 'required',
-            'alamat' => 'required',
-            'no_telp' => 'required',
-            'email' => 'required',
-            'keterangan' => 'required',
+            'nama_distributor' => 'required|max:50',
+            'alamat' => 'required|max:50',
+            'no_telp' => 'required|max:15',
+            'email' => 'required|max:10',
+            'keterangan' => 'required|max:45',
         ], [
-            'nama_distributor' => 'Distributor Name Cannot Be Empty!',
-            'alamat' => 'Address Cannot Be Empty!',
-            'no_telp' => 'Phone Number Cannot Be Empty!',
-            'email' => 'Email Cannot Be Empty!',
-            'keterangan' => 'Information Cannot Be Empty!',
+            'nama_distributor.required' => 'Distributor Name Cannot Be Empty!',
+            'nama_distributor.max' => 'Distributor Name Was To Loong!',
+            'alamat.required' => 'Address Cannot Be Empty!',
+            'alamat.max' => 'Address Was To Loong!',
+            'no_telp.required' => 'Phone Number Cannot Be Empty!',
+            'no_telp.max' => 'Phone Number Was To Loong!',
+            'email.required' => 'Email Cannot Be Empty!',
+            'email.max' => 'Email Was To Loong!',
+            'keterangan.required' => 'Information Cannot Be Empty!',
+            'keterangan.max' => 'Information Was To Loong!',
         ]);
         Distributor::create([
             'nama_distributor'=>$this->nama_distributor,
@@ -41,6 +53,7 @@ class DistributorComponent extends Component
         ]);
         session()->flash('success', 'Successfully Saved!');
         $this->reset();
+        return redirect()->route('distributor');
     }
     public function edit($id_distributor)
     {
@@ -64,6 +77,7 @@ class DistributorComponent extends Component
         ]);
         session()->flash('success', 'Successfully Changed!');
         $this->reset();
+        return redirect()->route('distributor');
     }
     public function confirm($id_distributor)
     {
@@ -75,5 +89,9 @@ class DistributorComponent extends Component
         $distributor->delete();
         session()->flash('success', 'Successfully Deleted!');
         $this->reset();
+    }
+    public function resetForm()
+    {
+        $this->reset(['nama_distributor', 'alamat', 'no_telp', 'email', 'keterangan']);
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('sub_kategori_assets', function (Blueprint $table) {
             $table->id('id_sub_kategori_asset')->autoIncrement();
-            $table->foreignIdFor(KategoriAsset::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(KategoriAsset::class, 'id_kategori_asset')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('kode_sub_kategori_asset', 20);
             $table->string('sub_kategori_asset', 25);
             $table->timestamps();

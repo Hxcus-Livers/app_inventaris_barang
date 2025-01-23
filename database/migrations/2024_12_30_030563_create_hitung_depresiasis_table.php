@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('hitung_depresiasis', function (Blueprint $table) {
             $table->id('id_hitung_depresiasi')->autoIncrement();
-            $table->foreignIdFor(Pengadaan::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Pengadaan::class, 'id_pengadaan')->constrained()->onDelete('cascade');
             $table->date('tgl_hitung_depresiasi');
             $table->string('bulan', 10);
             $table->integer('durasi');

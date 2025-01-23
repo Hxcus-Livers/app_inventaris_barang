@@ -7,12 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class Pengadaan extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $table = 'pengadaans';
     
@@ -21,7 +19,6 @@ class Pengadaan extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_pengadaan',
         'id_master_barang',
         'id_depresiasi',
         'id_merk',
@@ -35,10 +32,10 @@ class Pengadaan extends Model
         'tgl_pengadaan',
         'harga_barang',
         'nilai_barang',
+        'depresiasi_barang',
         'fb',
-        'keterangan'
-
-    ];
+        'keterangan',
+    ];    
 
     public function masterBarang():BelongsTo
     {

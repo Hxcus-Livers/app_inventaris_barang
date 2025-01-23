@@ -27,13 +27,16 @@ class ItemComponent extends Component
     {
         // Validate the request data
         $this->validate([
-                'kode_barang' => 'required',
-                'nama_barang' => 'required',
-                'spesifikasi_teknis' => 'required',
+                'kode_barang' => 'required|max:20',
+                'nama_barang' => 'required|max:100',
+                'spesifikasi_teknis' => 'required|max:100',
             ],[
                 'kode_barang.required' => 'Item Codes Cannot Be Empty!',
+                'kode_barang.max' => 'Item Codes Was To Loong!',
                 'nama_barang.required' => 'Item Names Cannot Be Empty!',
+                'nama_barang.max' => 'Item Names Was To Loong!',
                 'spesifikasi_teknis.required' => 'Technical Specifications Cannot Be Empty!',
+                'spesifikasi_teknis.max' => 'Technical Specifications Was To Loong!',
             ]
         );
         MasterBarang::create([
@@ -43,6 +46,7 @@ class ItemComponent extends Component
         ]);
         session()->flash('success', 'Successfully Saved!');
         $this->reset();
+        return redirect()->route('item');
     }   
     public function edit($id_master_barang)
     {
@@ -62,6 +66,7 @@ class ItemComponent extends Component
         ]);
         session()->flash('success', 'Successfully Changed!');
         $this->reset();
+        return redirect()->route('item');
     }
     public function confirm($id_master_barang)
     {
@@ -73,5 +78,9 @@ class ItemComponent extends Component
         $masterbarang->delete();
         session()->flash('success', 'Successfully Deleted!');
         $this->reset();
+    }
+    public function resetForm()
+    {
+        $this->reset(['kode_barang', 'nama_barang', 'spesifikasi_teknis']);
     }
 }

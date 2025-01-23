@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('mutasi_lokasis', function (Blueprint $table) {
             $table->id('id_mutasi_lokasi')->autoIncrement();
-            $table->foreignIdFor(Lokasi::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Pengadaan::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Lokasi::class, 'id_lokasi')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Pengadaan::class, 'id_pengadaan')->constrained()->onDelete('cascade');
             $table->string('flag_lokasi', 45);
             $table->string('flag_pindah', 45);
             $table->timestamps();
