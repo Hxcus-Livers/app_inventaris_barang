@@ -79,7 +79,7 @@ Calculat Depreciation
                                             <p class="text-xs font-weight-bold mb-0">{{ $data->tgl_hitung_depresiasi }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $data->bulan }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $data->bulan }} th Month</p>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">{{ $data->durasi }} Mount</p>
@@ -88,6 +88,9 @@ Calculat Depreciation
                                             <p class="text-xs font-weight-bold mb-0">Rp. {{ number_format($data->nilai_barang, 0, ',', '.') }}</p>
                                         </td>
                                         <td class="align-middle">
+                                            <a href="javascript:;" wire:click="showDetailModal({{ $data->id_hitung_depresiasi }})" class="text-info font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#depreciationDetailModal" >
+                                                Detail
+                                            </a>
                                             <a href="javascript:;" wire:click="edit({{ $data->id_hitung_depresiasi }})" class="text-warning font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#editPage">Edit</a>
                                             <a href="javascript:;" wire:click="confirm({{ $data->id_hitung_depresiasi }})" class="text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#deletePage">Delete</a>
                                         </td>
@@ -127,14 +130,6 @@ Calculat Depreciation
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <!-- Depreciation Calculation Date -->
-                                <div class="form-group">
-                                    <label>Depreciation Calculation Date</label>
-                                    <input type="date" class="form-control" wire:model="tgl_hitung_depresiasi">
-                                    @error('tgl_hitung_depresiasi')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
                                 <!-- Month -->
                                 <div class="form-group">
                                     <label>Month</label>
@@ -151,7 +146,6 @@ Calculat Depreciation
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -161,6 +155,45 @@ Calculat Depreciation
                     </div>
                 </div>
             </div>
+            <!-- Depreciation Detail Modal -->
+            <div wire:ignore.self class="modal fade" id="depreciationDetailModal" tabindex="-1" aria-labelledby="depreciationDetailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="depreciationDetailModalLabel">
+                                Depreciation Details - {{ $selectedItemName }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Initial Value</th>
+                                        <th>Monthly Depreciation</th>
+                                        <th>Remaining Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($detailDepreciationData as $detail)
+                                        <tr>
+                                            <td>{{ $detail['month'] }}</td>
+                                            <td>Rp. {{ $detail['initial_value'] }}</td>
+                                            <td>Rp. {{ $detail['monthly_depreciation'] }}</td>
+                                            <td>Rp. {{ $detail['remaining_value'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Edit -->
             <div wire:ignore.self class="modal fade " id="editPage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">

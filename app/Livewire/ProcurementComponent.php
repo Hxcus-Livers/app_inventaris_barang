@@ -37,9 +37,9 @@ class ProcurementComponent extends Component
     private function generateKodePengadaan()
     {
         $now = Carbon::now();
-        $dateCode = $now->format('Y/m/d');
+        $dateCode = $now->format('Ymd');
         $randomNum = rand(1000, 9999);
-        $this->kode_pengadaan = $dateCode . '/' . $randomNum;
+        $this->kode_pengadaan = 'PO' . $dateCode . $randomNum;
     }
 
     public function render()
