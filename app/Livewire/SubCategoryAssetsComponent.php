@@ -17,12 +17,17 @@ class SubCategoryAssetsComponent extends Component
     protected $queryString = ['search'];
     public function render()
     {
-        $data['subkategoriasset'] = SubKategoriAsset::whereHas('kategoriasset', function($query) {
-            $query->where('kategori_asset', 'like', '%' . $this->search . '%');
-        })
-        ->orWhere('kode_sub_kategori_asset', 'like', '%' . $this->search . '%')
-        ->orWhere('sub_kategori_asset', 'like', '%' . $this->search . '%')
-        ->paginate(10);
+        if ($this->search != "") {
+            $data['subkategoriasset'] = SubKategoriAsset::whereHas('kategoriasset', function ($query) {
+                $query->where('kategori_asset', 'like', '%' . $this->search . '%');
+            })
+                ->orWhere('kode_sub_kategori_asset', 'like', '%' . $this->search . '%')
+                ->orWhere('sub_kategori_asset', 'like', '%' . $this->search . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            $data['subkategoriasset'] = SubKategoriAsset::orderBy('created_at', 'desc')->paginate(10);
+        }
         $data['kategoriasset'] = KategoriAsset::all();
         return view('livewire.sub-category-assets-component', $data);
     }

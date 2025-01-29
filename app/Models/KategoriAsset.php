@@ -14,7 +14,7 @@ class KategoriAsset extends Model
 
     protected $primaryKey = 'id_kategori_asset';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'kode_kategori_asset',

@@ -17,9 +17,10 @@ class AssetsCategoryComponent extends Component
         if ($this->search != "") {
             $data['kategoriasset'] = KategoriAsset::where('kategori_asset', 'like', '%' . $this->search . '%')
             ->orWhere('kode_kategori_asset', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
         } else {
-            $data['kategoriasset']=KategoriAsset::paginate(10);
+            $data['kategoriasset']=KategoriAsset::orderBy('created_at', 'desc')->paginate(10);
         }
 
         return view('livewire.assets-category-component', $data);

@@ -14,7 +14,7 @@ class SubKategoriAsset extends Model
     protected $table = 'sub_kategori_assets';
 
     protected $primaryKey = 'id_sub_kategori_asset';
-
+    public $timestamps = true;
     protected $fillable = [
         'id_kategori_asset',
         'kode_sub_kategori_asset',

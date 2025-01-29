@@ -18,16 +18,21 @@ class LocationMutationComponent extends Component
     protected $queryString = ['search'];
     public function render()
     {
-        $data['mutasilokasi'] = MutasiLokasi::whereHas('pengadaan', function($query) {
-            $query->where('kode_pengadaan', 'like', '%' . $this->search . '%');
-            
-        })
-        ->orWherehas('lokasi', function($query) {
-            $query->where('nama_lokasi', 'like', '%' . $this->search . '%');
-        })
-        ->orWhere('flag_lokasi', 'like', '%' . $this->search . '%')
-        ->orWhere('flag_pindah', 'like', '%' . $this->search . '%')
-        ->paginate(10);
+        if ($this->search != "") {
+            $data['mutasilokasi'] = MutasiLokasi::whereHas('pengadaan', function($query) {
+                $query->where('kode_pengadaan', 'like', '%' . $this->search . '%');
+                
+            })
+            ->orWherehas('lokasi', function($query) {
+                $query->where('nama_lokasi', 'like', '%' . $this->search . '%');
+            })
+            ->orWhere('flag_lokasi', 'like', '%' . $this->search . '%')
+            ->orWhere('flag_pindah', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); 
+        } else {
+            $data['mutasilokasi']= MutasiLokasi::orderBy('created_at', 'desc')->paginate(10);
+        }
         $data['lokasi'] = Lokasi::all();
         $data['pengadaan'] = Pengadaan::all();
         return view('livewire.location-mutation-component', $data);

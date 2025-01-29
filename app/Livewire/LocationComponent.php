@@ -17,9 +17,10 @@ class LocationComponent extends Component
         if ($this->search != "") {
             $data['lokasi'] = Lokasi::where('kode_lokasi', 'like', '%' . $this->search . '%')
             ->orWhere('nama_lokasi', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
         } else {
-            $data['lokasi']= Lokasi::paginate(10);
+            $data['lokasi']= Lokasi::orderBy('created_at', 'desc')->paginate(10);
         }
         
         return view('livewire.location-component', data: $data);

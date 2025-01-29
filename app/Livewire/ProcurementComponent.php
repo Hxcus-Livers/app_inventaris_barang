@@ -23,8 +23,8 @@ class ProcurementComponent extends Component
         $id_distributor, $kode_pengadaan, $no_invoice, $no_seri_barang, $tahun_produksi,
         $tgl_pengadaan, $harga_barang, $nilai_barang, $depresiasi_barang, $fb, $keterangan,
         $id_Pengadaan;
-        public $search = '';
-    
+    public $search = '';
+
     public function mount()
     {
         // Set default values when component is mounted
@@ -44,13 +44,18 @@ class ProcurementComponent extends Component
 
     public function render()
     {
-        $data['pengadaan'] = Pengadaan::whereHas('masterbarang', function($query) {
-            $query->where('nama_barang', 'like', '%' . $this->search . '%');
-        })
-        ->orWhere('kode_pengadaan', 'like', '%' . $this->search . '%')
-        ->orWhere('no_invoice', 'like', '%' . $this->search . '%')
-        ->orWhere('no_seri_barang', 'like', '%' . $this->search . '%')
-        ->paginate(10);
+        if ($this->search != "") {
+            $data['pengadaan'] = Pengadaan::whereHas('masterbarang', function ($query) {
+                $query->where('nama_barang', 'like', '%' . $this->search . '%');
+            })
+                ->orWhere('kode_pengadaan', 'like', '%' . $this->search . '%')
+                ->orWhere('no_invoice', 'like', '%' . $this->search . '%')
+                ->orWhere('no_seri_barang', 'like', '%' . $this->search . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            $data['pengadaan'] = Pengadaan::orderBy('created_at', 'desc')->paginate(10);
+        }
         $data['masterbarang'] = MasterBarang::all();
         $data['depresiasi'] = Depresiasi::all();
         $data['merk'] = Merk::all();

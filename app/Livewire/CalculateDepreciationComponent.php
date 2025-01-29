@@ -13,13 +13,27 @@ class CalculateDepreciationComponent extends Component
 {
     use WithPagination, WithoutUrlPagination;
     public $id_hitung_depresiasi, $id_pengadaan, $tgl_hitung_depresiasi, $bulan, $durasi, $nilai_barang;
+    public $search = '';
     public $detailDepreciationData = [];
     public $selectedItemName = '';
 
     protected $paginationTheme = 'bootstrap';
+    protected $queryString = ['search'];
 
     public function render()
     {
+        if ($this->search != "") {
+            $data['hitungdepresiasi'] = HitungDepresiasi::whereHas('pengadaan', function($query) {
+                $query->where('kode_pengadaan', 'like', '%' . $this->search . '%');
+                
+            })
+            ->orWhere('tgl_hitung_depresiasi', 'like', '%' . $this->search . '%')
+            ->orWhere('bulan', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        } else {
+            $data['hitungdepresiasi']=HitungDepresiasi::orderBy('created_at', 'desc')->paginate(10);
+        }
         $data['hitungdepresiasi'] = HitungDepresiasi::paginate(10);
         $data['pengadaan'] = Pengadaan::all();
         return view('livewire.calculate-depreciation-component', $data);

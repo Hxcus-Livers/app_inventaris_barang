@@ -17,9 +17,10 @@ class DistributorComponent extends Component
         if ($this->search != "") {
             $data['distributor'] = Distributor::where('nama_distributor', 'like', '%' . $this->search . '%')
             ->orWhere('email', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
         } else {
-            $data['distributor']=Distributor::paginate(10);
+            $data['distributor']=Distributor::orderBy('created_at', 'desc')->paginate(10);
         }
 
         return view('livewire.distributor-component', $data);
@@ -30,7 +31,7 @@ class DistributorComponent extends Component
             'nama_distributor' => 'required|max:50',
             'alamat' => 'required|max:50',
             'no_telp' => 'required|max:15',
-            'email' => 'required|max:10',
+            'email' => 'required|max:30',
             'keterangan' => 'required|max:45',
         ], [
             'nama_distributor.required' => 'Distributor Name Cannot Be Empty!',

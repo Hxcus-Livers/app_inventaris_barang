@@ -14,7 +14,7 @@ class Opname extends Model
 
     protected $primaryKey = 'id_opname';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'id_pengadaan',

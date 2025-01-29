@@ -16,9 +16,10 @@ class DepreciationComponent extends Component
         if ($this->search != "") {
             $data['depresiasi'] = Depresiasi::where('lama_depresiasi', 'like', '%' . $this->search . '%')
             ->orWhere('keterangan', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
         } else {
-            $data['depresiasi']=Depresiasi::paginate(10);
+            $data['depresiasi']=Depresiasi::orderBy('created_at', 'desc')->paginate(10);
         }
 
         return view('livewire.depreciation-component', $data);

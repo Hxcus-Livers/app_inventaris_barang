@@ -14,7 +14,7 @@ class Lokasi extends Model
 
     protected $primaryKey = 'id_lokasi';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'kode_lokasi',

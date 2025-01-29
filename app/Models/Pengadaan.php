@@ -16,7 +16,7 @@ class Pengadaan extends Model
     
     protected $primaryKey = 'id_pengadaan';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'id_master_barang',

@@ -14,7 +14,7 @@ class HitungDepresiasi extends Model
 
     protected $primaryKey = 'id_hitung_depresiasi';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'id_pengadaan',

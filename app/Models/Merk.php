@@ -14,7 +14,7 @@ class Merk extends Model
 
     protected $primaryKey = 'id_merk';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'merk',

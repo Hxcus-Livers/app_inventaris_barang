@@ -14,7 +14,7 @@ class Satuan extends Model
 
     protected $primaryKey = 'id_satuan';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'satuan'

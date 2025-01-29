@@ -17,13 +17,18 @@ class OpnameComponent extends Component
     protected $queryString = ['search'];
     public function render()
     {
-        $data['opname'] = Opname::whereHas('pengadaan', function($query) {
-            $query->where('kode_pengadaan', 'like', '%' . $this->search . '%');
-        })
-        ->orWhere('tgl_opname', 'like', '%' . $this->search . '%')
-        ->orWhere('kondisi', 'like', '%' . $this->search . '%')
-        ->orWhere('keterangan', 'like', '%' . $this->search . '%')
-        ->paginate(10);
+        if ($this->search != "") {
+            $data['opname'] = Opname::whereHas('pengadaan', function ($query) {
+                $query->where('kode_pengadaan', 'like', '%' . $this->search . '%');
+            })
+                ->orWhere('tgl_opname', 'like', '%' . $this->search . '%')
+                ->orWhere('kondisi', 'like', '%' . $this->search . '%')
+                ->orWhere('keterangan', 'like', '%' . $this->search . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            $data['opname'] = Opname::orderBy('created_at', 'desc')->paginate(10);
+        }
         $data['pengadaan'] = Pengadaan::all();
         return view('livewire.opname-component', $data);
     }
@@ -38,7 +43,7 @@ class OpnameComponent extends Component
             // id_pengadaan
             'id_pengadaan.required' => 'Procurement Code must be selected!',
             'id_pengadaan.exists' => 'Invalid Procurement Code!',
-            
+
             'tgl_opname' => 'Date Opname Cannot Be Empty!',
             'kondisi.required' => 'Condition Cannot Be Empty!',
             'kondisi.max' => 'Condition Was To Loong!',
@@ -90,6 +95,6 @@ class OpnameComponent extends Component
     }
     public function resetForm()
     {
-        $this->reset(['id_pengadaan', 'tgl_opname', 'kondisi','keterangan']);
+        $this->reset(['id_pengadaan', 'tgl_opname', 'kondisi', 'keterangan']);
     }
 }

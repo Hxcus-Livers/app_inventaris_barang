@@ -14,7 +14,7 @@ class MutasiLokasi extends Model
 
     protected $primaryKey = 'id_mutasi_lokasi';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'id_lokasi',

@@ -15,7 +15,7 @@ class MasterBarang extends Model
 
     protected $primaryKey = 'id_master_barang';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'kode_barang',

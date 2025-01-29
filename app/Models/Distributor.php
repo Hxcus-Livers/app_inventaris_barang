@@ -15,7 +15,7 @@ class Distributor extends Model
 
     protected $primaryKey = 'id_distributor';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'nama_distributor',

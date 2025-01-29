@@ -15,7 +15,7 @@ class Depresiasi extends Model
 
     protected $primaryKey = 'id_depresiasi';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'lama_depresiasi',

@@ -91,13 +91,6 @@ Items
                         <div class="modal-body">
                             <form>
                                 <div class="from-group">
-                                    <label>Item Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_barang" value="{{ @old('kode_barang')}}">
-                                    @error('kode_barang')
-                                    <div class="form-text text-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
-                                <div class="from-group">
                                     <label>Item Name</label>
                                     <input type="text" class="form-control" wire:model="nama_barang" value="{{ @old('nama_barang')}}">
                                     @error('nama_barang')
@@ -130,13 +123,6 @@ Items
                         </div>
                         <div class="modal-body">
                             <form>
-                                <div class="from-group">
-                                    <label>Item Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_barang" value="{{ @old('kode_barang')}}">
-                                    @error('kode_barang')
-                                    <div class="form-text text-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
                                 <div class="from-group">
                                     <label>Item Name</label>
                                     <input type="text" class="form-control" wire:model="nama_barang" value="{{ @old('nama_barang')}}">
