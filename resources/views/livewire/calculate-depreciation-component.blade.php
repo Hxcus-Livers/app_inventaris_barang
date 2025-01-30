@@ -241,14 +241,6 @@ Calculat Depreciation
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <!-- Item Value -->
-                                <div class="form-group">
-                                    <label>Item Value</label>
-                                    <input type="text" class="form-control" wire:model="nilai_barang">
-                                    @error('nilai_barang')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">

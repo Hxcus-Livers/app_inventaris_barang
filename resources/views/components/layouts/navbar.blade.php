@@ -15,15 +15,28 @@
                 </div>
             </div>
             <ul class="navbar-nav  justify-content-end">
+                <!-- User Info -->
+                <li class="nav-item d-flex align-items-center me-3">
+                    <span class="nav-link text-white font-weight-bold px-0">
+                        <i class="fa fa-user me-sm-1"></i>
+                        <span class="d-sm-inline d-none">{{ auth()->user()->name }}</span>
+                        <span class="badge bg-gradient-{{ auth()->user()->isAdmin() ? 'primary' : 'success' }} ms-2">
+                            {{ auth()->user()->getRoleName() }}
+                        </span>
+                    </span>
+                </li>
+
+                <!-- Logout Button -->
                 <li class="nav-item d-flex align-items-center">
                     <form method="POST" action="{{ route('logout') }}" class="d-flex align-items-center mb-0">
                         @csrf
                         <button type="submit" class="nav-link text-white font-weight-bold px-0 border-0 bg-transparent" style="cursor: pointer; text-decoration: none;">
-                            <i class="fa fa-user me-sm-1"></i>
+                            <i class="fa fa-sign-out me-sm-1"></i>
                             <span class="d-sm-inline d-none">Log Out</span>
                         </button>
                     </form>
                 </li>
+
                 <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                         <div class="sidenav-toggler-inner">

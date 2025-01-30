@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        
     ];
 
     /**
@@ -44,5 +45,44 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    /**
+     * Check if user is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 0;
+    }
+
+    /**
+     * Check if user is an accountant
+     */
+    public function isAccountant(): bool
+    {
+        return $this->role === 1;
+    }
+
+    /**
+     * Get role name
+     */
+    public function getRoleName(): string
+    {
+        return match($this->role) {
+            0 => 'Admin',
+            1 => 'Accountant',
+            default => 'User',
+        };
+    }
+
+    /**
+     * Check if user has specific role
+     */
+    public function hasRole(int|array $roles): bool
+    {
+        if (is_array($roles)) {
+            return in_array($this->role, $roles);
+        }
+        
+        return $this->role === $roles;
     }
 }

@@ -17,6 +17,7 @@
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
+                @if(auth()->user()->isAdmin())
                 <!-- Data Management -->
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Data Management</h6>
@@ -105,11 +106,13 @@
                     </a>
                 </li>
                 <!-- End Location Mutation Management -->
+                @endif
 
                 <!-- Depreciation Management -->
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Depreciation Management</h6>
                 </li>
+                @if(auth()->user()->isAdmin())
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('depreciation') ? 'active' : '' }}" href="{{ route('depreciation') }}">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -118,6 +121,7 @@
                         <span class="nav-link-text ms-1">Depreciation</span>
                     </a>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('calculat-depreciation') ? 'active' : '' }}" href="{{ route('calculat-depreciation') }}">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -128,6 +132,7 @@
                 </li>
                 <!-- End Depreciation Management -->
 
+                @if(auth()->user()->isAdmin())
                 <!-- Audit and Recording -->
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Audit and Recording</h6>
@@ -141,6 +146,7 @@
                     </a>
                 </li>
                 <!-- End Audit and Recording -->
+                @endif
 
                 <!-- Account pages -->
                 <li class="nav-item mt-3">
@@ -159,9 +165,10 @@
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-sign-in-alt text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Sign In</span>
+                        <span class="nav-link-text ms-1">Log Out</span>
                     </a>
                 </li>
+                @if(auth()->user()->isAdmin())
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('register') ? 'active' : '' }}" href="{{ route('register') }}">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -170,7 +177,7 @@
                         <span class="nav-link-text ms-1">Create Account</span>
                     </a>
                 </li>
-
+                @endif
                 <!-- End Account pages -->
             </ul>
         </div>
