@@ -7,7 +7,7 @@ Depreciation Management
 @endsection
 
 @section('page-title')
-Calculat Depreciation
+Calculate Depreciation
 @endsection
 
 <div class="container-fluid py-4">
@@ -15,7 +15,7 @@ Calculat Depreciation
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                    <h6>Calculat Depreciation Table</h6>
+                    <h6>Calculate Depreciation Table</h6>
                     <!-- Search bar -->
                     <div class="ms-auto pe-md-3 d-flex align-items-center">
                         <div class="input-group">
@@ -31,18 +31,28 @@ Calculat Depreciation
                         {{ session('success') }}
                     </div>
                     @endif
+
+                    @if (session()->has('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('error') }}
+                    </div>
+                    @endif
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Procurement Code</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Item</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Depreciation Calculation Date</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Month</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Duration</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Item Value</th>
+                                        @if(auth()->user()->isAdmin())
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created By</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Last Edited By</th>
+                                        @endif
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Selection</th>
                                     </tr>
                                 </thead>
@@ -87,12 +97,48 @@ Calculat Depreciation
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">Rp. {{ number_format($data->nilai_barang, 0, ',', '.') }}</p>
                                         </td>
+                                        @if(auth()->user()->isAdmin())
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">
+                                                {{ optional($data->creator)->name ?? 'N/A' }}
+                                                <br>
+                                                <small class="text-muted">
+                                                    {{ $data->created_at ? $data->created_at->format('d/m/Y H:i') : 'N/A' }}
+                                                </small>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">
+                                                @if($data->last_edited_by)
+                                                {{ optional($data->lastEditor)->name ?? 'N/A' }}
+                                                <br>
+                                                <small class="text-muted">
+                                                    {{ $data->last_edited_at ? \Carbon\Carbon::parse($data->last_edited_at)->format('d/m/Y H:i') : 'N/A' }}
+                                                </small>
+                                                @else
+                                                <span class="text-muted">Not edited</span>
+                                                @endif
+                                            </p>
+                                        </td>
+                                        @endif
                                         <td class="align-middle">
-                                            <a href="javascript:;" wire:click="showDetailModal({{ $data->id_hitung_depresiasi }})" class="text-info font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#depreciationDetailModal" >
+                                            <a href="javascript:;" wire:click="showDetailModal({{ $data->id_hitung_depresiasi }})" class="text-info font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#depreciationDetailModal">
                                                 Detail
                                             </a>
-                                            <a href="javascript:;" wire:click="edit({{ $data->id_hitung_depresiasi }})" class="text-warning font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#editPage">Edit</a>
-                                            <a href="javascript:;" wire:click="confirm({{ $data->id_hitung_depresiasi }})" class="text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#deletePage">Delete</a>
+                                            @if(auth()->user()->isAdmin() || auth()->user()->isAccountant())
+                                            @if(!auth()->user()->isAdmin() && $data->edited_count >= 1)
+                                            <span class="text-muted text-xs">Edit limit reached</span>
+                                            @else
+                                            <a href="javascript:;" wire:click="edit({{ $data->id_hitung_depresiasi }})" class="text-warning font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#editPage">
+                                                Edit
+                                            </a>
+                                            @endif
+                                            @endif
+                                            @if(auth()->user()->isAdmin())
+                                            <a href="javascript:;" wire:click="confirm({{ $data->id_hitung_depresiasi }})" class="text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#deletePage">
+                                                Delete
+                                            </a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -116,7 +162,7 @@ Calculat Depreciation
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                        <form>
+                            <form>
                                 <!-- Procurement Code -->
                                 <div class="form-group">
                                     <label>Procurement Code</label>
@@ -177,12 +223,12 @@ Calculat Depreciation
                                 </thead>
                                 <tbody>
                                     @foreach($detailDepreciationData as $detail)
-                                        <tr>
-                                            <td>{{ $detail['month'] }}</td>
-                                            <td>Rp. {{ $detail['initial_value'] }}</td>
-                                            <td>Rp. {{ $detail['monthly_depreciation'] }}</td>
-                                            <td>Rp. {{ $detail['remaining_value'] }}</td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{ $detail['month'] }}</td>
+                                        <td>Rp. {{ $detail['initial_value'] }}</td>
+                                        <td>Rp. {{ $detail['monthly_depreciation'] }}</td>
+                                        <td>Rp. {{ $detail['remaining_value'] }}</td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -203,6 +249,12 @@ Calculat Depreciation
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+
+                            @if (session()->has('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                            @endif
                             <form>
                                 <!-- Procurement Code -->
                                 <div class="form-group">
@@ -214,14 +266,6 @@ Calculat Depreciation
                                         @endforeach
                                     </select>
                                     @error('id_pengadaan')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <!-- Depreciation Calculation -->
-                                <div class="form-group">
-                                    <label>Depreciation Calculation</label>
-                                    <input type="text" class="form-control" wire:model="tgl_hitung_depresiasi">
-                                    @error('tgl_hitung_depresiasi')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>

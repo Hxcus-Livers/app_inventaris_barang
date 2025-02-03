@@ -26,6 +26,7 @@ class PengadaanSeeder extends Seeder
                 'no_seri_barang' => 'SN001',
                 'tahun_produksi' => '2023',
                 'tgl_pengadaan' => '2025-01-01',
+                'jumlah_barang' => 1,
                 'harga_barang' => 1000000,
                 'depresiasi_barang' => 0,
                 'nilai_barang' => 0,

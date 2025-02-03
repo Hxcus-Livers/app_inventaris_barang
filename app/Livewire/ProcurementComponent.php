@@ -21,8 +21,8 @@ class ProcurementComponent extends Component
     protected $queryString = ['search'];
     public $id_master_barang, $id_depresiasi, $id_merk, $id_satuan, $id_sub_kategori_asset,
         $id_distributor, $kode_pengadaan, $no_invoice, $no_seri_barang, $tahun_produksi,
-        $tgl_pengadaan, $harga_barang, $nilai_barang, $depresiasi_barang, $fb, $keterangan,
-        $id_Pengadaan;
+        $tgl_pengadaan, $jumlah_barang, $harga_barang, $nilai_barang, $depresiasi_barang,
+        $fb, $keterangan, $id_Pengadaan;
     public $search = '';
 
     public function mount()
@@ -40,6 +40,23 @@ class ProcurementComponent extends Component
         $dateCode = $now->format('Ymd');
         $randomNum = rand(1000, 9999);
         $this->kode_pengadaan = 'PO' . $dateCode . $randomNum;
+    }
+
+    private function calculateNilaiBarang()
+    {
+        if ($this->jumlah_barang && $this->harga_barang) {
+            $this->nilai_barang = $this->jumlah_barang * $this->harga_barang;
+        }
+    }
+
+    public function updatedJumlahBarang()
+    {
+        $this->calculateNilaiBarang();
+    }
+
+    public function updatedHargaBarang()
+    {
+        $this->calculateNilaiBarang();
     }
 
     public function render()
@@ -77,6 +94,7 @@ class ProcurementComponent extends Component
             'no_invoice' => 'required|max:20',
             'no_seri_barang' => 'required|max:50',
             'tahun_produksi' => 'required|numeric|max:9999|min:1900',
+            'jumlah_barang' => 'required',
             'harga_barang' => 'required',
             'keterangan' => 'required|max:50',
 
@@ -84,6 +102,7 @@ class ProcurementComponent extends Component
             // Validation messages remain the same
         ]);
         // dd($this);
+        $this->calculateNilaiBarang();
 
         // Create new procurement with auto-generated values
         Pengadaan::create([
@@ -98,8 +117,9 @@ class ProcurementComponent extends Component
             'no_seri_barang' => $this->no_seri_barang,
             'tahun_produksi' => $this->tahun_produksi,
             'tgl_pengadaan' => $this->tgl_pengadaan,
+            'jumlah_barang' => $this->jumlah_barang,
             'harga_barang' => $this->harga_barang,
-            'nilai_barang' => 0,
+            'nilai_barang' => $this->nilai_barang,
             'depresiasi_barang' => 0, // Initial value before calculation
             'fb' => $this->fb ?? '1',
             'keterangan' => $this->keterangan
@@ -125,6 +145,7 @@ class ProcurementComponent extends Component
         $this->no_seri_barang = $pengadaan->no_seri_barang;
         $this->tahun_produksi = $pengadaan->tahun_produksi;
         $this->tgl_pengadaan = $pengadaan->tgl_pengadaan;
+        $this->jumlah_barang = $pengadaan->jumlah_barang;
         $this->harga_barang = $pengadaan->harga_barang;
         $this->nilai_barang = $pengadaan->nilai_barang;
         $this->depresiasi_barang = $pengadaan->depresiasi_barang;
@@ -135,6 +156,8 @@ class ProcurementComponent extends Component
 
     public function update()
     {
+        $this->calculateNilaiBarang();
+
         $pengadaan = Pengadaan::find($this->id_Pengadaan);
         $pengadaan->update([
             'id_master_barang' => $this->id_master_barang,
@@ -147,6 +170,7 @@ class ProcurementComponent extends Component
             'no_seri_barang' => $this->no_seri_barang,
             'tahun_produksi' => $this->tahun_produksi,
             'tgl_pengadaan' => $this->tgl_pengadaan,
+            'jumlah_barang' => $this->jumlah_barang,
             'harga_barang' => $this->harga_barang,
             'nilai_barang' => $this->nilai_barang,
             'depresiasi_barang' => $this->depresiasi_barang,
@@ -181,6 +205,7 @@ class ProcurementComponent extends Component
             'no_invoice',
             'no_seri_barang',
             'tahun_produksi',
+            'jumlah_barang',
             'harga_barang',
             'nilai_barang',
             'fb',

@@ -19,6 +19,12 @@ return new class extends Migration
             $table->string('bulan', 10);
             $table->integer('durasi');
             $table->integer('nilai_barang');
+            $table->unsignedInteger('edited_count')->default(0);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->timestamp('last_edited_at')->nullable();
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->unsignedBigInteger('last_edited_by')->nullable();
+            $table->foreign('last_edited_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

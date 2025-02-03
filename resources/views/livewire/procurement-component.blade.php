@@ -48,6 +48,7 @@ Procurement
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Item Serial Number</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Production Year</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Procurement Date</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Amount Item</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Item</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Item Value</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Depreciation Item</th>
@@ -87,7 +88,7 @@ Procurement
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
-                                                @if($data->merk)
+                                                @if($data->merk)    
                                                 {{ $data->merk->merk }}
                                                 @else
                                                 <span class="text-muted">No Brand</span>
@@ -137,13 +138,16 @@ Procurement
                                             <p class="text-xs font-weight-bold mb-0">{{ $data->tgl_pengadaan }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $data->harga_barang }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $data->jumlah_barang }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $data->nilai_barang }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">Rp. {{ number_format($data->harga_barang, 0, ',', '.') }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{ $data->depresiasi_barang }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">Rp. {{ number_format($data->nilai_barang, 0, ',', ',') }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">Rp. {{ number_format($data->depresiasi_barang, 0, ',', ',') }}</p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             @if ($data->fb == 0)
@@ -279,9 +283,17 @@ Procurement
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
+                                <!-- Amount Item -->
+                                <div class="form-group">
+                                    <label>Amount Item</label>
+                                    <input type="number" class="form-control" wire:model="jumlah_barang">
+                                    @error('jumlah_barang')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                                 <!-- Price Item -->
                                 <div class="form-group">
-                                    <label>Item Value</label>
+                                    <label>Price Item</label>
                                     <input type="number" class="form-control" wire:model="harga_barang">
                                     @error('harga_barang')
                                     <small class="text-danger">{{ $message }}</small>
@@ -421,9 +433,17 @@ Procurement
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
+                                <!-- Amount Item -->
+                                <div class="form-group">
+                                    <label>Amount Item</label>
+                                    <input type="number" class="form-control" wire:model="jumlah_barang">
+                                    @error('jumlah_barang')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                                 <!-- Price Item -->
                                 <div class="form-group">
-                                    <label>Item Value</label>
+                                    <label>Price Item</label>
                                     <input type="number" class="form-control" wire:model="harga_barang">
                                     @error('harga_barang')
                                     <small class="text-danger">{{ $message }}</small>

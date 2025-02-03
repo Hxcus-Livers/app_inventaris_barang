@@ -30,6 +30,7 @@ class Pengadaan extends Model
         'no_seri_barang',
         'tahun_produksi',
         'tgl_pengadaan',
+        'jumlah_barang',
         'harga_barang',
         'nilai_barang',
         'depresiasi_barang',

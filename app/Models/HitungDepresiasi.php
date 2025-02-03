@@ -21,11 +21,24 @@ class HitungDepresiasi extends Model
         'tgl_hitung_depresiasi',
         'bulan',
         'durasi',
-        'nilai_barang'
+        'nilai_barang',
+        'last_edited_at',
+        'created_by',
+        'edited_count',
+        'last_edited_by',
     ];
 
     public function pengadaan():BelongsTo
     {
         return $this->belongsTo(Pengadaan::class, 'id_pengadaan');
     }
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function lastEditor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'last_edited_by');
+    }
+
 }

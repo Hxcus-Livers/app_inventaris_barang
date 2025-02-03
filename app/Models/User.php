@@ -21,7 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        
+        'role',
+        'email_verified_at',
+        'remember_token',
     ];
 
     /**
@@ -49,18 +51,21 @@ class User extends Authenticatable
     /**
      * Check if user is an admin
      */
-    public function isAdmin(): bool
+    public function isAdmin()
     {
         return $this->role === 0;
     }
 
     /**
-     * Check if user is an accountant
+     * Check if the user is an accountant
+     *
+     * @return bool
      */
-    public function isAccountant(): bool
+    public function isAccountant()
     {
         return $this->role === 1;
     }
+
 
     /**
      * Get role name

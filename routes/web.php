@@ -31,12 +31,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Home route
-    Route::get('/home', HomeComponent::class)->middleware('verified')->name('home');
+    Route::get('/dashboard', HomeComponent::class)->middleware('verified')->name('home');
 
     // Route yang bisa diakses admin dan accountant
-    Route::get('/calculat-depreciation', CalculateDepreciationComponent::class)
+    Route::get('/calculate-depreciation', CalculateDepreciationComponent::class)
         ->middleware(\App\Http\Middleware\RoleMiddleware::class . ':0,1')
-        ->name('calculat-depreciation');
+        ->name('calculate-depreciation');
 
     // Routes khusus admin
     Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {

@@ -123,11 +123,11 @@
                 </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('calculat-depreciation') ? 'active' : '' }}" href="{{ route('calculat-depreciation') }}">
+                    <a class="nav-link {{ Request::is('calculate-depreciation') ? 'active' : '' }}" href="{{ route('calculate-depreciation') }}">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-calculator text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Calculat Depreciation</span>
+                        <span class="nav-link-text ms-1">Calculate Depreciation</span>
                     </a>
                 </li>
                 <!-- End Depreciation Management -->
