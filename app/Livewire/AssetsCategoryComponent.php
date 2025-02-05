@@ -25,17 +25,30 @@ class AssetsCategoryComponent extends Component
 
         return view('livewire.assets-category-component', $data);
     }
+    private function generateKodeKategoriAsset()
+    {
+        $lastKategori = KategoriAsset::orderBy('kode_kategori_asset', 'desc')->first();
+        
+        if ($lastKategori) {
+            $lastNumber = intval(substr($lastKategori->kode_kategori_asset, 4));
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        $this->kode_kategori_asset = 'KCAT' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    }
     public function store()
     {
         $this->validate([
-            'kode_kategori_asset' => 'required|max:20',
             'kategori_asset' => 'required|max:25',
         ], [
-            'kode_kategori_asset.required' => 'Assets Category Code Name Cannot Be Empty!',
-            'kode_kategori_asset.max' => 'Assets Category Code Was To Loong!!',
             'kategori_asset.required' => 'Assets Category Name Cannot Be Empty!',
             'kategori_asset.max' => 'Assets Category Name Was To Loong!!',
         ]);
+
+        $this->generateKodeKategoriAsset();
+
         KategoriAsset::create([
             'kode_kategori_asset'=>$this->kode_kategori_asset,
             'kategori_asset'=>$this->kategori_asset,

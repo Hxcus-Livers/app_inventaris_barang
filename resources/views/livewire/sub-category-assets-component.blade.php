@@ -103,13 +103,6 @@ Asset Subcategory
                                     @enderror
                                 </div>
                                 <div class="from-group">
-                                    <label>Asset Subcategory Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_sub_kategori_asset" value="{{ @old('kode_sub_kategori_asset')}}">
-                                    @error('kode_sub_kategori_asset')
-                                    <div class="form-text text-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
-                                <div class="from-group">
                                     <label>Asset Subcategory</label>
                                     <input type="text" class="form-control" wire:model="sub_kategori_asset" value="{{ @old('sub_kategori_asset')}}">
                                     @error('sub_kategori_asset')
@@ -145,13 +138,6 @@ Asset Subcategory
                                     </select>
                                     @error('id_kategori_asset')
                                     <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="from-group">
-                                    <label>Asset Subcategory Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_sub_kategori_asset" value="{{ @old('kode_sub_kategori_asset')}}">
-                                    @error('kode_sub_kategori_asset')
-                                    <div class="form-text text-danger">{{$message}}</div>
                                     @enderror
                                 </div>
                                 <div class="from-group">

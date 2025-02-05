@@ -7,7 +7,7 @@
             </a>
         </div>
         <hr class="horizontal dark mt-0">
-        <div class="collapse navbar-collapse w-auto" id="sidenav-scrollbar">
+        <div class="collapse navbar-collapse w-auto h-auto" id="sidenav-scrollbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('home') ? 'active' : '' }}" href="{{ route('home') }}">

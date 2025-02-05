@@ -91,13 +91,6 @@ Location
                         <div class="modal-body">
                             <form>
                                 <div class="from-group">
-                                    <label>Location Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_lokasi" value="{{ @old('kode_lokasi')}}">
-                                    @error('kode_lokasi')
-                                    <div class="form-text text-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
-                                <div class="from-group">
                                     <label>Location Name</label>
                                     <input type="text" class="form-control" wire:model="nama_lokasi" value="{{ @old('nama_lokasi')}}">
                                     @error('nama_lokasi')
@@ -130,13 +123,6 @@ Location
                         </div>
                         <div class="modal-body">
                             <form>
-                                <div class="from-group">
-                                    <label>Location Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_lokasi" value="{{ @old('kode_lokasi')}}">
-                                    @error('kode_lokasi')
-                                    <div class="form-text text-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
                                 <div class="from-group">
                                     <label>Location Name</label>
                                     <input type="text" class="form-control" wire:model="nama_lokasi" value="{{ @old('nama_lokasi')}}">

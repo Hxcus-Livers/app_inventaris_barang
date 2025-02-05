@@ -176,14 +176,6 @@ Calculate Depreciation
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <!-- Month -->
-                                <div class="form-group">
-                                    <label>Month</label>
-                                    <input type="text" class="form-control" wire:model="bulan">
-                                    @error('bulan')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
                                 <!-- Duration -->
                                 <div class="form-group">
                                     <label>Duration</label>
@@ -249,12 +241,6 @@ Calculate Depreciation
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-
-                            @if (session()->has('error'))
-                            <div class="alert alert-danger" role="alert">
-                                {{ session('error') }}
-                            </div>
-                            @endif
                             <form>
                                 <!-- Procurement Code -->
                                 <div class="form-group">
@@ -266,14 +252,6 @@ Calculate Depreciation
                                         @endforeach
                                     </select>
                                     @error('id_pengadaan')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <!-- Month -->
-                                <div class="form-group">
-                                    <label>Month</label>
-                                    <input type="text" class="form-control" wire:model="bulan">
-                                    @error('bulan')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>

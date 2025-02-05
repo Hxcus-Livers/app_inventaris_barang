@@ -3,7 +3,7 @@ Pages
 @endsection
 
 @section('breadcrumb-active')
-Procurement Management
+Audit and Recording
 @endsection
 
 @section('page-title')
@@ -113,14 +113,6 @@ Opname
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <!-- Location Flag -->
-                                <div class="form-group">
-                                    <label>Date Opname</label>
-                                    <input type="date" class="form-control" wire:model="tgl_opname">
-                                    @error('tgl_opname')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
                                 <!-- Condition -->
                                 <div class="form-group">
                                     <label>Condition</label>
@@ -166,14 +158,6 @@ Opname
                                         @endforeach
                                     </select>
                                     @error('id_pengadaan')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <!-- Location Flag -->
-                                <div class="form-group">
-                                    <label>Date Opname</label>
-                                    <input type="date" class="form-control" wire:model="tgl_opname">
-                                    @error('tgl_opname')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>

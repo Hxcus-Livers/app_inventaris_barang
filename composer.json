@@ -26,7 +26,11 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "routes/schedule.php"
+        ]
+
     },
     "autoload-dev": {
         "psr-4": {

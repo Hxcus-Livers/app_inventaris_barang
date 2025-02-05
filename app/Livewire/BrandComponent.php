@@ -17,10 +17,9 @@ class BrandComponent extends Component
         if ($this->search != "") {
             $data['merks'] = Merk::where('merk', 'like', '%' . $this->search . '%')
             ->orWhere('keterangan', 'like', '%' . $this->search . '%')
-            ->orderBy('created_at', 'desc')
             ->paginate(10);
         } else {
-            $data['merks']=Merk::orderBy('created_at', 'desc')->paginate(10);
+            $data['merks']=Merk::paginate(10);
         }
         
         return view('livewire.brand-component', $data);

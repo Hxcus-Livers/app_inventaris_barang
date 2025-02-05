@@ -87,13 +87,6 @@ Assets Category
                         <div class="modal-body">
                             <form>
                                 <div class="from-group">
-                                    <label>Assets Category Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_kategori_asset" value="{{ @old('kode_kategori_asset')}}">
-                                    @error('kode_kategori_asset')
-                                    <div class="form-text text-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
-                                <div class="from-group">
                                     <label>Assets Category</label>
                                     <input type="text" class="form-control" wire:model="kategori_asset" value="{{ @old('kategori_asset')}}">
                                     @error('kategori_asset')
@@ -119,13 +112,6 @@ Assets Category
                         </div>
                         <div class="modal-body">
                             <form>
-                                <div class="from-group">
-                                    <label>Assets Category Code</label>
-                                    <input type="text" class="form-control" wire:model="kode_kategori_asset" value="{{ @old('kode_kategori_asset')}}">
-                                    @error('kode_kategori_asset')
-                                    <div class="form-text text-danger">{{$message}}</div>
-                                    @enderror
-                                </div>
                                 <div class="from-group">
                                     <label>Assets Category</label>
                                     <input type="text" class="form-control" wire:model="kategori_asset" value="{{ @old('kategori_asset')}}">

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Opname;
 use App\Models\Pengadaan;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\Features\SupportPagination\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -15,6 +16,11 @@ class OpnameComponent extends Component
     public $search = '';
     protected $paginationTheme = 'bootstrap';
     protected $queryString = ['search'];
+    public function mount()
+    {
+        $this->tgl_opname = Carbon::now()->format('Y-m-d');
+    }
+
     public function render()
     {
         if ($this->search != "") {

@@ -3,11 +3,11 @@ Pages
 @endsection
 
 @section('breadcrumb-active')
-Procurement Management
+Location Mutation Management
 @endsection
 
 @section('page-title')
-Procurement
+Location Mutation
 @endsection
 
 <div class="container-fluid py-4">

@@ -73,7 +73,7 @@ class ProcurementComponent extends Component
         } else {
             $data['pengadaan'] = Pengadaan::orderBy('created_at', 'desc')->paginate(10);
         }
-        $data['masterbarang'] = MasterBarang::all();
+        $data['masterbarang'] = MasterBarang::orderBy('nama_barang', 'asc')->get();
         $data['depresiasi'] = Depresiasi::all();
         $data['merk'] = Merk::all();
         $data['satuan'] = Satuan::all();

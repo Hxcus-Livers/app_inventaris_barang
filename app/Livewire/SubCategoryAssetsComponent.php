@@ -31,20 +31,34 @@ class SubCategoryAssetsComponent extends Component
         $data['kategoriasset'] = KategoriAsset::all();
         return view('livewire.sub-category-assets-component', $data);
     }
+    private function generateKodeSubKategoriAsset()
+    {
+        $lastSubKategori = SubKategoriAsset::orderBy('kode_sub_kategori_asset', 'desc')->first();
+        
+        if ($lastSubKategori) {
+            $lastNumber = intval(substr($lastSubKategori->kode_sub_kategori_asset, 4));
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        $this->kode_sub_kategori_asset =  'SUB' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    }
+
     public function store()
     {
         $this->validate([
             'id_kategori_asset' => 'required|exists:kategori_assets,id_kategori_asset',
-            'kode_sub_kategori_asset' => 'required|max:20',
             'sub_kategori_asset' => 'required|max:25',
         ], [
             'id_kategori_asset.required' => 'Asset category must be selected!',
             'id_kategori_asset.exists' => 'Invalid asset category!',
-            'kode_sub_kategori_asset' => 'Asset Subcategory Code Name Cannot Be Empty!',
-            'kode_sub_kategori_asset.max' => 'Asset Subcategory Was To Loong!',
             'sub_kategori_asset' => 'Asset Subcategory Cannot Be Empty!',
             'sub_kategori_asset.max' => 'Asset Subcategory Was To Loong!',
         ]);
+
+        $this->generateKodeSubKategoriAsset();
+
         SubKategoriAsset::create([
             'id_kategori_asset' => $this->id_kategori_asset,
             'kode_sub_kategori_asset' => $this->kode_sub_kategori_asset,
