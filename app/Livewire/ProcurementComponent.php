@@ -24,6 +24,8 @@ class ProcurementComponent extends Component
         $tgl_pengadaan, $jumlah_barang, $harga_barang, $nilai_barang, $depresiasi_barang,
         $fb, $keterangan, $id_Pengadaan;
     public $search = '';
+    public $showDeleteModal = false;
+    public $deleteErrorMessage = '';
 
     public function mount()
     {
@@ -185,13 +187,39 @@ class ProcurementComponent extends Component
     public function confirm($id_Pengadaan)
     {
         $this->id_Pengadaan = $id_Pengadaan;
+        $pengadaan = Pengadaan::find($id_Pengadaan);
+
+        // Check for related data that would prevent deletion
+        if ($pengadaan->mutasilokasi()->count() > 0) {
+            $this->deleteErrorMessage = 'This procurement has related location mutation. Please delete the location mutation first.';
+            $this->showDeleteModal = true;
+            return;
+        }
+
+        // If no related data, proceed with normal confirmation
+        $this->showDeleteModal = true;
+        $this->deleteErrorMessage = '';
     }
     public function destroy()
     {
         $pengadaan = Pengadaan::find($this->id_Pengadaan);
-        $pengadaan->delete();
-        session()->flash('success', 'Successfully Deleted!');
-        $this->reset();
+
+        // Re-check for related data before deletion
+        if ($pengadaan->mutasilokasi()->count() > 0) {
+            session()->flash('error', 'Cannot delete: This procurement has related location mutation that must be deleted first.');
+            $this->showDeleteModal = false;
+            return;
+        }
+    
+        try {
+            $pengadaan->delete();
+            session()->flash('success', 'Successfully Deleted!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the procurement.');
+        }
+    
+        $this->showDeleteModal = false;
+        $this->reset(['id_master_barang', 'deleteErrorMessage']);
     }
     public function resetForm()
     {

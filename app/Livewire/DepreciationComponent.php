@@ -11,15 +11,17 @@ class DepreciationComponent extends Component
 {
     use WithPagination, WithoutUrlPagination;
     public $id_depresiasi, $lama_depresiasi, $keterangan, $search;
+    public $showDeleteModal = false;
+    public $deleteErrorMessage = '';
     public function render()
     {
         if ($this->search != "") {
             $data['depresiasi'] = Depresiasi::where('lama_depresiasi', 'like', '%' . $this->search . '%')
-            ->orWhere('keterangan', 'like', '%' . $this->search . '%')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+                ->orWhere('keterangan', 'like', '%' . $this->search . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
         } else {
-            $data['depresiasi']=Depresiasi::orderBy('created_at', 'desc')->paginate(10);
+            $data['depresiasi'] = Depresiasi::orderBy('created_at', 'desc')->paginate(10);
         }
 
         return view('livewire.depreciation-component', $data);
@@ -35,8 +37,8 @@ class DepreciationComponent extends Component
             'keterangan.max' => 'Information Was To Loong!!',
         ]);
         Depresiasi::create([
-            'lama_depresiasi'=>$this->lama_depresiasi,
-            'keterangan'=>$this->keterangan
+            'lama_depresiasi' => $this->lama_depresiasi,
+            'keterangan' => $this->keterangan
         ]);
         session()->flash('success', 'Successfully Saved!');
         $this->reset();
@@ -53,8 +55,8 @@ class DepreciationComponent extends Component
     {
         $depresiasi = Depresiasi::find($this->id_depresiasi);
         $depresiasi->update([
-            'lama_depresiasi'=>$this->lama_depresiasi,
-            'keterangan'=>$this->keterangan
+            'lama_depresiasi' => $this->lama_depresiasi,
+            'keterangan' => $this->keterangan
         ]);
         session()->flash('success', 'Successfully Changed!');
         $this->reset();
@@ -63,13 +65,35 @@ class DepreciationComponent extends Component
     public function confirm($id_depresiasi)
     {
         $this->id_depresiasi = $id_depresiasi;
+        $depresiasi = Depresiasi::find($id_depresiasi);
+
+        if ($depresiasi->pengadaan()->count() > 0) {
+            $this->deleteErrorMessage = 'This depresiasi has related procurement. Please delete the procurement first.';
+        } else {
+            $this->deleteErrorMessage = '';
+        }
+
+        $this->showDeleteModal = true;
     }
     public function destroy()
     {
         $depresiasi = Depresiasi::find($this->id_depresiasi);
-        $depresiasi->delete();
-        session()->flash('success', 'Successfully Deleted!');
-        $this->reset();
+        // Double-check for related data before deletion
+        if ($depresiasi->pengadaan()->count() > 0) {
+            session()->flash('error', 'Cannot delete: This depresiasi has related procurement that must be deleted first.');
+            $this->showDeleteModal = false;
+            return;
+        }
+
+        try {
+            $depresiasi->delete();
+            session()->flash('success', 'Successfully Deleted!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the depresiasi.');
+        }
+
+        $this->showDeleteModal = false;
+        $this->reset(['id_depresiasi', 'deleteErrorMessage']);
     }
     public function resetForm()
     {

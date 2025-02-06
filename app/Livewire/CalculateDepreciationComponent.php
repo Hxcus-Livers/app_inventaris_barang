@@ -110,11 +110,15 @@ class CalculateDepreciationComponent extends Component
         $this->validate([
             'id_pengadaan' => 'required|exists:pengadaans,id_pengadaan',
             'tgl_hitung_depresiasi' => 'required',
+            'bulan' => 'required|numeric|min:0',
             'durasi' => 'required|numeric|min:1',
         ], [
             'id_pengadaan.required' => 'Procurement Code must be selected!',
             'id_pengadaan.exists' => 'Invalid Procurement Code!',
             'tgl_hitung_depresiasi.required' => 'Depreciation Calculation date Cannot Be Empty!',
+            'bulan.required' => 'Month Cannot Be Empty!',
+            'bulan.numeric' => 'Month must be a number!',
+            'bulan.min' => 'Month must be at least 0!',
             'durasi.required' => 'Duration Cannot Be Empty!',
             'durasi.numeric' => 'Duration must be a number!',
             'durasi.min' => 'Duration must be at least 1!',

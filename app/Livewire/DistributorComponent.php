@@ -11,16 +11,18 @@ class DistributorComponent extends Component
 {
     use WithPagination, WithoutUrlPagination;
     public $nama_distributor, $alamat, $no_telp, $email, $keterangan, $id_distributor, $search;
+    public $showDeleteModal = false;
+    public  $deleteErrorMessage = '';
     protected $paginationTheme = 'bootstrap';
     public function render()
     {
         if ($this->search != "") {
             $data['distributor'] = Distributor::where('nama_distributor', 'like', '%' . $this->search . '%')
-            ->orWhere('email', 'like', '%' . $this->search . '%')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+                ->orWhere('email', 'like', '%' . $this->search . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
         } else {
-            $data['distributor']=Distributor::orderBy('created_at', 'desc')->paginate(10);
+            $data['distributor'] = Distributor::orderBy('created_at', 'desc')->paginate(10);
         }
 
         return view('livewire.distributor-component', $data);
@@ -46,11 +48,11 @@ class DistributorComponent extends Component
             'keterangan.max' => 'Information Was To Loong!',
         ]);
         Distributor::create([
-            'nama_distributor'=>$this->nama_distributor,
-            'alamat'=>$this->alamat,
-            'no_telp'=>$this->no_telp,
-            'email'=>$this->email,
-            'keterangan'=>$this->keterangan
+            'nama_distributor' => $this->nama_distributor,
+            'alamat' => $this->alamat,
+            'no_telp' => $this->no_telp,
+            'email' => $this->email,
+            'keterangan' => $this->keterangan
         ]);
         session()->flash('success', 'Successfully Saved!');
         $this->reset();
@@ -70,11 +72,11 @@ class DistributorComponent extends Component
     {
         $distributor = Distributor::find($this->id_distributor);
         $distributor->update([
-            'nama_distributor'=>$this->nama_distributor,
-            'alamat'=>$this->alamat,
-            'no_telp'=>$this->no_telp,
-            'email'=>$this->email,
-            'keterangan'=>$this->keterangan
+            'nama_distributor' => $this->nama_distributor,
+            'alamat' => $this->alamat,
+            'no_telp' => $this->no_telp,
+            'email' => $this->email,
+            'keterangan' => $this->keterangan
         ]);
         session()->flash('success', 'Successfully Changed!');
         $this->reset();
@@ -83,13 +85,36 @@ class DistributorComponent extends Component
     public function confirm($id_distributor)
     {
         $this->id_distributor = $id_distributor;
+        $distributor = Distributor::find($id_distributor);
+
+        // Check if there are related 
+        if ($distributor->pengadaan()->count() > 0) {
+            $this->deleteErrorMessage = 'This category has related procurement. Please delete the procurement first.';
+        } else {
+            $this->deleteErrorMessage = '';
+        }
+
+        $this->showDeleteModal = true;
     }
     public function destroy()
     {
         $distributor = Distributor::find($this->id_distributor);
-        $distributor->delete();
-        session()->flash('success', 'Successfully Deleted!');
-        $this->reset();
+        // Double-check for related data before deletion
+        if ($distributor->pengadaaan()->count() > 0) {
+            session()->flash('error', 'Cannot delete: This distributor has related procurement that must be deleted first.');
+            $this->showDeleteModal = false;
+            return;
+        }
+
+        try {
+            $distributor->delete();
+            session()->flash('success', 'Successfully Deleted!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the distributor.');
+        }
+
+        $this->showDeleteModal = false;
+        $this->reset(['id_distributor', 'deleteErrorMessage']);
     }
     public function resetForm()
     {

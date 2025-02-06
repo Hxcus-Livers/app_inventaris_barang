@@ -255,6 +255,14 @@ Calculate Depreciation
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
+                                <!-- mount -->
+                                <div class="form-group">
+                                    <label>Mount</label>
+                                    <input type="text" class="form-control" wire:model="bulan">
+                                    @error('bulan')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                                 <!-- Duration -->
                                 <div class="form-group">
                                     <label>Duration</label>

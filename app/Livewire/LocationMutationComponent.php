@@ -14,6 +14,8 @@ class LocationMutationComponent extends Component
     use WithPagination, WithoutUrlPagination;
     public $id_mutasi_lokasi, $id_lokasi, $id_pengadaan, $flag_lokasi, $flag_pindah;
     public $search = '';
+    public $showDeleteModal = false;
+    public $deleteErrorMessage = '';
     protected $paginationTheme = 'bootstrap';
     protected $queryString = ['search'];
     public function render()
@@ -93,13 +95,30 @@ class LocationMutationComponent extends Component
     public function confirm($id_mutasi_lokasi)
     {
         $this->id_mutasi_lokasi = $id_mutasi_lokasi;
+        $mutasiLokasi = MutasiLokasi::find($id_mutasi_lokasi);
+
+        if ($mutasiLokasi->pengadaan()->count() > 0) {
+            $this->deleteErrorMessage = 'This location-mutation has related procurement. Please delete the procurement first.';
+        } else {
+            $this->deleteErrorMessage = '';
+        }
+
+        $this->showDeleteModal = true;
     }
     public function destroy()
     {
-        $mutasilokasi = MutasiLokasi::find($this->id_mutasi_lokasi);
-        $mutasilokasi->delete();
-        session()->flash('success', 'Successfully Deleted!');
-        $this->reset();
+        $mutasiLokasi = MutasiLokasi::find($this->id_mutasi_lokasi);
+        
+        try {
+            $mutasiLokasi->delete();
+            session()->flash('success', 'Successfully Deleted!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the location mutation.');
+        }
+
+        $this->showDeleteModal = false;
+        $this->reset(['id_mutasi_lokasi', 'deleteErrorMessage']);
+
     }
     public function resetForm()
     {

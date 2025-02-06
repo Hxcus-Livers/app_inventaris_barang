@@ -13,6 +13,8 @@ class SubCategoryAssetsComponent extends Component
     use WithPagination, WithoutUrlPagination;
     public $id_kategori_asset, $kode_sub_kategori_asset, $sub_kategori_asset, $id_sub_kategori_asset;
     public $search = '';
+    public $showDeleteModal = false;
+    public $deleteErrorMessage = '';
     protected $paginationTheme = 'bootstrap';
     protected $queryString = ['search'];
     public function render()
@@ -34,7 +36,7 @@ class SubCategoryAssetsComponent extends Component
     private function generateKodeSubKategoriAsset()
     {
         $lastSubKategori = SubKategoriAsset::orderBy('kode_sub_kategori_asset', 'desc')->first();
-        
+
         if ($lastSubKategori) {
             $lastNumber = intval(substr($lastSubKategori->kode_sub_kategori_asset, 4));
             $newNumber = $lastNumber + 1;
@@ -91,13 +93,38 @@ class SubCategoryAssetsComponent extends Component
     public function confirm($id_sub_kategori_asset)
     {
         $this->id_sub_kategori_asset = $id_sub_kategori_asset;
+        $subKategoriAsset = SubKategoriAsset::find($id_sub_kategori_asset);
+
+        // Check if there are related pengadaan
+        if ($subKategoriAsset->pengadaan()->count() > 0) {
+            $this->deleteErrorMessage = 'This subcategory has related procurement data. Please delete the procurement data first.';
+        } else {
+            $this->deleteErrorMessage = '';
+        }
+
+        $this->showDeleteModal = true;
     }
     public function destroy()
     {
-        $subkategoriasset = SubKategoriAsset::find($this->id_sub_kategori_asset);
-        $subkategoriasset->delete();
-        session()->flash('success', 'Successfully Deleted!');
-        $this->reset();
+        $subKategoriAsset = SubKategoriAsset::find($this->id_sub_kategori_asset);
+        
+        // Double-check for related data before deletion
+        if ($subKategoriAsset->pengadaan()->count() > 0) {
+            session()->flash('error', 'Cannot delete: This subcategory has related procurement data that must be deleted first.');
+            $this->showDeleteModal = false;
+            return;
+        }
+
+        try {
+            $subKategoriAsset->delete();
+            session()->flash('success', 'Successfully Deleted!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the subcategory.');
+        }
+
+        $this->showDeleteModal = false;
+        $this->reset(['id_sub_kategori_asset', 'deleteErrorMessage']);
+
     }
     public function resetForm()
     {

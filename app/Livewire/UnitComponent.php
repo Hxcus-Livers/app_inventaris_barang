@@ -11,6 +11,8 @@ class UnitComponent extends Component
 {
     use WithPagination, WithoutUrlPagination;
     public $satuan, $id_satuan;
+    public $showDeleteModal = false;
+    public  $deleteErrorMessage = '';
     protected $paginationTheme = 'bootstrap';
     public function render()
     {
@@ -25,7 +27,7 @@ class UnitComponent extends Component
             'satuan' => 'Unit Cannot Be Empty!',
         ]);
         Satuan::create([
-            'satuan'=>$this->satuan,
+            'satuan' => $this->satuan,
         ]);
         session()->flash('success', 'Successfully Saved!');
         $this->reset();
@@ -41,7 +43,7 @@ class UnitComponent extends Component
     {
         $satuans = Satuan::find($this->id_satuan);
         $satuans->update([
-            'satuan'=>$this->satuans,
+            'satuan' => $this->satuans,
         ]);
         session()->flash('success', 'Successfully Changed!');
         $this->reset();
@@ -50,13 +52,36 @@ class UnitComponent extends Component
     public function confirm($id_satuan)
     {
         $this->id_satuan = $id_satuan;
+        $satuans = Satuan::find($id_satuan);
+
+        // Check if there are related sub-categories
+        if ($satuans->pengadaan()->count() > 0) {
+            $this->deleteErrorMessage = 'This unit has related procurement. Please delete the procurement first.';
+        } else {
+            $this->deleteErrorMessage = '';
+        }
+
+        $this->showDeleteModal = true;
     }
     public function destroy()
     {
         $satuans = Satuan::find($this->id_satuan);
-        $satuans->delete();
-        session()->flash('success', 'Successfully Deleted!');
-        $this->reset();
+        // Double-check for related data before deletion
+        if ($satuans->pengadaan()->count() > 0) {
+            session()->flash('error', 'Cannot delete: This unit has related procurement that must be deleted first.');
+            $this->showDeleteModal = false;
+            return;
+        }
+
+        try {
+            $satuans->delete();
+            session()->flash('success', 'Successfully Deleted!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the unit.');
+        }
+
+        $this->showDeleteModal = false;
+        $this->reset(['id_satuan', 'deleteErrorMessage']);
     }
     public function resetForm()
     {

@@ -10,7 +10,10 @@ use Livewire\WithPagination;
 class LocationComponent extends Component
 {
     use WithPagination, WithoutUrlPagination;
+
     public $kode_lokasi, $nama_lokasi, $keterangan, $id_lokasi, $search;
+    public $showDeleteModal = false;
+    public  $deleteErrorMessage = '';
     protected $paginationTheme = 'bootstrap';
     private function generateLocationCode()
     {
@@ -27,12 +30,12 @@ class LocationComponent extends Component
     {
         if ($this->search != "") {
             $data['lokasi'] = Lokasi::where('kode_lokasi', 'like', '%' . $this->search . '%')
-            ->orWhere('nama_lokasi', 'like', '%' . $this->search . '%')
-            ->paginate(10);
+                ->orWhere('nama_lokasi', 'like', '%' . $this->search . '%')
+                ->paginate(10);
         } else {
-            $data['lokasi']= Lokasi::paginate(10);
+            $data['lokasi'] = Lokasi::paginate(10);
         }
-        
+
         return view('livewire.location-component', data: $data);
     }
     public function store()
@@ -50,9 +53,9 @@ class LocationComponent extends Component
         $this->kode_lokasi = $this->generateLocationCode();
 
         Lokasi::create([
-            'kode_lokasi'=>$this->kode_lokasi,
-            'nama_lokasi'=>$this->nama_lokasi,
-            'keterangan'=>$this->keterangan
+            'kode_lokasi' => $this->kode_lokasi,
+            'nama_lokasi' => $this->nama_lokasi,
+            'keterangan' => $this->keterangan
         ]);
         session()->flash('success', 'Successfully Saved!');
         $this->reset();
@@ -70,9 +73,9 @@ class LocationComponent extends Component
     {
         $lokasi = Lokasi::find($this->id_lokasi);
         $lokasi->update([
-            'kode_lokasi'=>$this->kode_lokasi,
-            'nama_lokasi'=>$this->nama_lokasi,
-            'keterangan'=>$this->keterangan
+            'kode_lokasi' => $this->kode_lokasi,
+            'nama_lokasi' => $this->nama_lokasi,
+            'keterangan' => $this->keterangan
         ]);
         session()->flash('success', 'Successfully Changed!');
         $this->reset();
@@ -81,13 +84,36 @@ class LocationComponent extends Component
     public function confirm($id_lokasi)
     {
         $this->id_lokasi = $id_lokasi;
+        $lokasi = Lokasi::find($id_lokasi);
+
+        // Check if there are related sub-categories
+        if ($lokasi->mutasiLokasi()->count() > 0) {
+            $this->deleteErrorMessage = 'This category has related location-mutation. Please delete the location-mutation first.';
+        } else {
+            $this->deleteErrorMessage = '';
+        }
+
+        $this->showDeleteModal = true;
     }
     public function destroy()
     {
         $lokasi = Lokasi::find($this->id_lokasi);
-        $lokasi->delete();
-        session()->flash('success', 'Successfully Deleted!');
-        $this->reset();
+        // Double-check for related data before deletion
+        if ($lokasi->mutasiLokasi()->count() > 0) {
+            session()->flash('error', 'Cannot delete: This location has related location-mutation that must be deleted first.');
+            $this->showDeleteModal = false;
+            return;
+        }
+
+        try {
+            $lokasi->delete();
+            session()->flash('success', 'Successfully Deleted!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the location.');
+        }
+
+        $this->showDeleteModal = false;
+        $this->reset(['id_lokasi', 'deleteErrorMessage']);
     }
     public function resetForm()
     {
