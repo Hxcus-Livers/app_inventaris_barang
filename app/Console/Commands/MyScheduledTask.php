@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
 class MyScheduledTask extends Command
-{
+{   
     protected $signature = 'depreciation:increment-month';
     protected $description = 'Increment the month value for all depreciation calculations';
 

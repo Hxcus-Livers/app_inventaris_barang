@@ -45,6 +45,7 @@ Items
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Item Code</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Item Name</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Technical Specifications</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Quantity</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Selection</th>
                                     </tr>
                                 </thead>
@@ -68,7 +69,11 @@ Items
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">{{ $data->spesifikasi_teknis }}</p>
                                         </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $data->total_quantity }}</p>
+                                        </td>
                                         <td class="align-middle">
+                                            <a href="javascript:;" wire:click="showDetail({{ $data->id_master_barang }})" class="text-info font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#detailPage">Detail</a>
                                             <a href="javascript:;" wire:click="edit({{ $data->id_master_barang }})" class="text-warning font-weight-bold text-xs me-3" data-bs-toggle="modal" data-bs-target="#editPage">Edit</a>
                                             <a href="javascript:;" wire:click="confirm({{ $data->id_master_barang }})" class="text-danger font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#deletePage">Delete</a>
                                         </td>
@@ -147,6 +152,48 @@ Items
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" wire:click="resetForm">Close</button>
                             <button type="button" wire:click="update" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Detail Modal -->
+            <div wire:ignore.self class="modal fade" id="detailPage" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Item Detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @if($selectedItem)
+                            <div class="mb-3">
+                                <h6>Item Name: {{ $selectedItem->nama_barang }}</h6>
+                                <h6>Item Code: {{ $selectedItem->kode_barang }}</h6>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <td>Good Condition:</td>
+                                        <td>{{ $conditionCounts['baik'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Damaged:</td>
+                                        <td>{{ $conditionCounts['rusak'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lost:</td>
+                                        <td>{{ $conditionCounts['hilang'] }}</td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <td><strong>Total:</strong></td>
+                                        <td><strong>{{ $selectedItem->total_quantity }}</strong></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

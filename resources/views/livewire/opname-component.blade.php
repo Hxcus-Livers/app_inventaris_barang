@@ -40,6 +40,7 @@ Opname
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Procurement Code</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date Opname</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Condition</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantity</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Information</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Selection</th>
                                     </tr>
@@ -71,6 +72,9 @@ Opname
                                             <p class="text-xs font-weight-bold mb-0">{{ $data->kondisi }}</p>
                                         </td>
                                         <td>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $data->jumlah_barang }}</p>
+                                        </td>
+                                        <td>
                                             <p class="text-xs font-weight-bold mb-0">{{ $data->keterangan }}</p>
                                         </td>
                                         <td class="align-middle">
@@ -95,10 +99,15 @@ Opname
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Asset Subcategory</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Opname</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            @if (session()->has('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                            @endif
                             <form>
                                 <!-- Procurement Code -->
                                 <div class="form-group">
@@ -116,8 +125,21 @@ Opname
                                 <!-- Condition -->
                                 <div class="form-group">
                                     <label>Condition</label>
-                                    <input type="text" class="form-control" wire:model="kondisi">
+                                    <select class="form-control" wire:model="kondisi">
+                                        <option value="">-- Select Condition --</option>
+                                        <option value="Baik">Baik</option>
+                                        <option value="Rusak">Rusak</option>
+                                        <option value="Hilang">Hilang</option>
+                                    </select>
                                     @error('kondisi')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <!-- Quantity -->
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" class="form-control" wire:model="jumlah_barang" min="0">
+                                    @error('jumlah_barang')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -143,11 +165,11 @@ Opname
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Location Mutation</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Opanme</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                        <form>
+                            <form>
                                 <!-- Procurement Code -->
                                 <div class="form-group">
                                     <label>Procurement Code</label>
@@ -164,8 +186,21 @@ Opname
                                 <!-- Condition -->
                                 <div class="form-group">
                                     <label>Condition</label>
-                                    <input type="text" class="form-control" wire:model="kondisi">
+                                    <select class="form-control" wire:model="kondisi">
+                                        <option value="">-- Select Condition --</option>
+                                        <option value="Baik">Baik</option>
+                                        <option value="Rusak">Rusak</option>
+                                        <option value="Hilang">Hilang</option>
+                                    </select>
                                     @error('kondisi')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <!-- Quantity -->
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" class="form-control" wire:model="jumlah_barang" min="0">
+                                    @error('jumlah_barang')
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>

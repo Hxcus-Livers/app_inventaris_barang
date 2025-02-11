@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Pengadaan::class, 'id_pengadaan')->constrained()->onDelete('cascade');
             $table->date('tgl_opname');
             $table->string('kondisi', 25);
+            $table->integer('jumlah_barang')->default(0);
             $table->string('keterangan', 100)->nullable();
             $table->timestamps();
         });

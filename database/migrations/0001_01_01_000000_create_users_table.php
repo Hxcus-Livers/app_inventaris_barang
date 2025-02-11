@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->integer('role'); // admin => 1, Accountant => 2
+            $table->integer('role')->default(1); // admin => 1, Accountant => 2
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

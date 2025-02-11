@@ -14,6 +14,8 @@ class ItemComponent extends Component
     public $kode_barang, $nama_barang, $spesifikasi_teknis, $id_master_barang, $search;
     public $showDeleteModal = false;
     public $deleteErrorMessage = '';
+    public $selectedItem;
+    public $conditionCounts = [];
     public function render()
     {
         if ($this->search != "") {
@@ -36,6 +38,11 @@ class ItemComponent extends Component
             $newNumber = 1;
         }
         return 'ITM' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    }
+    public function showDetail($id)
+    {
+        $this->selectedItem = MasterBarang::find($id);
+        $this->conditionCounts = $this->selectedItem->getConditionCounts();
     }
     public function store()
     {

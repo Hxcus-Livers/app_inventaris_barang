@@ -20,7 +20,8 @@ class Opname extends Model
         'id_pengadaan',
         'tgl_opname',
         'kondisi',
-        'keterangan'
+        'jumlah_barang',
+        'keterangan',
     ];
 
     public function pengadaan():BelongsTo

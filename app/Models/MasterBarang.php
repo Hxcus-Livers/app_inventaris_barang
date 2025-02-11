@@ -27,4 +27,27 @@ class MasterBarang extends Model
     {
         return $this->hasMany(Pengadaan::class, 'id_master_barang');
     }
+
+    public function getTotalQuantityAttribute()
+    {
+        return $this->pengadaan()->sum('jumlah_barang');
+    }
+
+    public function getConditionCounts()
+    {
+        $counts = [
+            'baik' => 0,
+            'rusak' => 0,
+            'hilang' => 0
+        ];
+
+        foreach ($this->pengadaan as $pengadaan) {
+            $opnames = Opname::where('id_pengadaan', $pengadaan->id_pengadaan)->get();
+            foreach ($opnames as $opname) {
+                $counts[strtolower($opname->kondisi)] += $opname->jumlah_barang;
+            }
+        }
+
+        return $counts;
+    }
 }
