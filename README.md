@@ -81,7 +81,7 @@ App Inventaris Barang adalah aplikasi manajemen inventaris berbasis web yang dir
 
 1. **Login ke aplikasi**
    - Username: admin@example.com
-   - Password: password
+   - Password: admin
 
 2. **Mengelola Barang**
    - Navigasi ke menu "Barang"
