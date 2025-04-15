@@ -31,7 +31,6 @@ App Inventaris Barang adalah aplikasi manajemen inventaris berbasis web yang dir
 - Node.js dan NPM untuk pengembangan frontend
 
 ## 🚀 Cara Instalasi
-
 1. **Clone repositori**
    ```bash
    git clone https://github.com/Hxcus-Livers/app_inventaris_barang.git
@@ -43,19 +42,29 @@ App Inventaris Barang adalah aplikasi manajemen inventaris berbasis web yang dir
    composer install
    ```
 
-3. **Instal dependensi JavaScript**
+3. **Instal Livewire**
+   ```bash
+   composer require livewire/livewire
+   ```
+
+4. **Instal dependensi JavaScript**
    ```bash
    npm install
    npm run dev
    ```
 
-4. **Setup konfigurasi**
+5. **Setup konfigurasi**
    ```bash
    cp .env.example .env
    php artisan key:generate
    ```
 
-5. **Konfigurasi database**
+6. **Publikasi file konfigurasi Livewire (opsional)**
+   ```bash
+   php artisan livewire:publish --config
+   ```
+
+7. **Konfigurasi database**
    - Edit file `.env` dan sesuaikan pengaturan database:
    ```
    DB_CONNECTION=mysql
@@ -66,12 +75,17 @@ App Inventaris Barang adalah aplikasi manajemen inventaris berbasis web yang dir
    DB_PASSWORD=
    ```
 
-6. **Migrasi dan seeding database**
+8. **Migrasi dan seeding database**
    ```bash
    php artisan migrate --seed
    ```
 
-7. **Jalankan aplikasi**
+9. **Buat symlink untuk storage (jika diperlukan)**
+   ```bash
+   php artisan storage:link
+   ```
+
+10. **Jalankan aplikasi**
    ```bash
    php artisan serve
    ```
